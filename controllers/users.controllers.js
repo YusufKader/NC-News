@@ -1,6 +1,6 @@
 const { fetchUsersByUsername } = require("../models/users.model");
 
-exports.sendAllTopics = (req, res) => {
+exports.sendAllUsers = (req, res) => {
   fetchUsersByUsername().then((users) => {
     res.status(200).send({ users });
   });
