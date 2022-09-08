@@ -92,3 +92,47 @@ describe("1. GET/api?users", () => {
       });
   });
 });
+
+describe("PATCH /api/articles/:article_id", () => {
+  const articleUpdate = {
+    votes: 3,
+  };
+  test("status:200, responds with an updated article", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send(articleUpdate)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.article).toEqual({
+          article_id: 1,
+          title: "Living in the shadow of a great man",
+          topic: "mitch",
+          author: "butter_bridge",
+          body: "I find this existence challenging",
+          created_at: "2020-07-09T20:11:00.000Z",
+          votes: 103,
+        });
+      });
+  });
+
+   test("status:404, article not found", () => {
+     return request(app)
+       .get("/api/articles/3000")
+       .expect(404)
+       .then(({ body }) => {
+         const { message } = body;
+         expect(message).toEqual("Article not found");
+       });
+   });
+
+    test("status: 400, responds with a invalid input", () => {
+      const ARTICLE_ID = "not a number";
+      return request(app)
+        .get(`/api/articles/${ARTICLE_ID}`)
+        .expect(400)
+        .then(({ body }) => {
+          const { message } = body;
+          expect(message).toEqual("Invalid data type");
+        });
+    });
+});
