@@ -2,12 +2,15 @@
 const express = require("express");
 const { sendAllTopics } = require("./controllers/topics.controllers");
 const { getArticlesById } = require("./controllers/articles.controllers");
+const { sendAllUsers } = require("./controllers/users.controllers")
 
 const app = express();
 
 app.get("/api/topics", sendAllTopics);
 
 app.get("/api/articles/:article_id", getArticlesById);
+
+app.get("/api/users", sendAllUsers);
 
 app.use((err, req, res, next) => {
   if (err.status && err.message) {
