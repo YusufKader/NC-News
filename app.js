@@ -1,3 +1,4 @@
+
 const express = require("express");
 const { sendAllTopics } = require("./controllers/topics.controllers");
 const { getArticlesById } = require("./controllers/articles.controllers");
@@ -26,3 +27,4 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
+

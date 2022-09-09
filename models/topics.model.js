@@ -1,3 +1,4 @@
+
 const db = require("../db/connection");
 
 exports.fetchTopicBySlug = () => {
@@ -5,3 +6,4 @@ exports.fetchTopicBySlug = () => {
     return results.rows;
   });
 };
+
