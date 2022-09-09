@@ -7,7 +7,7 @@ const seed = require("../db/seeds/seed");
 beforeEach(() => seed(data));
 
 afterAll(() => {
-  if (db.end) db.end();
+  return db.end();
 });
 
 describe("1. GET/api?topics", () => {
@@ -94,10 +94,10 @@ describe("1. GET/api?users", () => {
 });
 
 describe("PATCH /api/articles/:article_id", () => {
-  const articleUpdate = {
-    votes: 3,
-  };
   test("status:200, responds with an updated article", () => {
+    const articleUpdate = {
+      inc_votes: 3,
+  };
     return request(app)
       .patch("/api/articles/1")
       .send(articleUpdate)
@@ -114,21 +114,42 @@ describe("PATCH /api/articles/:article_id", () => {
         });
       });
   });
+  test("status:200, responds with no updated votes when a vote of 0 is passed ", () => {
+    const articleUpdate = {
+      inc_votes: 0,
+  };
+    return request(app)
+      .patch("/api/articles/3")
+      .send(articleUpdate)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.article).toEqual({
+          article_id: 3,
+          title: "Eight pug gifs that remind me of mitch",
+          topic: "mitch",
+          author: "icellusedkars",
+          body: "some gifs",
+          created_at: "2020-11-03T09:12:00.000Z",
+          votes: 0,
+        });
+      });
+  });
 
    test("status:404, article not found", () => {
+     const ARTICLE_ID = 1000;
      return request(app)
-       .get("/api/articles/3000")
-       .expect(404)
-       .then(({ body }) => {
-         const { message } = body;
-         expect(message).toEqual("Article not found");
-       });
-   });
-
+     .patch(`/api/articles/${ARTICLE_ID}`)
+     .expect(404)
+     .then(({ body }) => {
+       const { message } = body;
+       expect(message).toEqual("Article not found");
+      });
+    });
+    
     test("status: 400, responds with a invalid input", () => {
       const ARTICLE_ID = "not a number";
       return request(app)
-        .get(`/api/articles/${ARTICLE_ID}`)
+        .patch(`/api/articles/${ARTICLE_ID}`)
         .expect(400)
         .then(({ body }) => {
           const { message } = body;

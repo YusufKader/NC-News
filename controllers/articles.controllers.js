@@ -29,9 +29,12 @@ exports.getArticlesById = (req, res, next) => {
 
 exports.patchArticlesById = (req, res, next) => {
   const { article_id } = req.params;
-  const { votes } = req.body;
-  newArticleById(article_id, votes)
+  const { inc_votes } = req.body;
+  newArticleById(article_id, inc_votes)
     .then((article) => {
+      if (article === undefined) {
+        return Promise.reject({ status: 404, message: "Article not found" });
+      }
       res.status(200).send({ article });
     })
     .catch(next);

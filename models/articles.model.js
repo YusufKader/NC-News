@@ -8,8 +8,8 @@ exports.selectArticlesById = (article_id) => {
     });
 };
 
-exports.newArticleById = (article_id, votes) => {
-  const varArr = [votes, article_id];
+exports.newArticleById = (article_id, inc_votes) => {
+  const varArr = [inc_votes, article_id];
   return db
     .query(
       "UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *",
