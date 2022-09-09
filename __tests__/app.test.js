@@ -1,4 +1,6 @@
+
 const request = require("supertest");
+
 const app = require("../app");
 const db = require("../db/connection");
 const data = require("../db/data/test-data/index");
@@ -93,6 +95,7 @@ describe("1. GET/api?users", () => {
   });
 });
 
+
 describe("PATCH /api/articles/:article_id", () => {
   test("status:200, responds with an updated article", () => {
     const articleUpdate = {
@@ -157,3 +160,4 @@ describe("PATCH /api/articles/:article_id", () => {
         });
     });
 });
+
