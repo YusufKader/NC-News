@@ -1,3 +1,4 @@
+
 const { fetchTopicBySlug } = require("../models/topics.model");
 
 exports.sendAllTopics = (req, res) => {
@@ -5,3 +6,4 @@ exports.sendAllTopics = (req, res) => {
     res.status(200).send({ topics });
   });
 };
+

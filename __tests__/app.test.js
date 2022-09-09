@@ -1,4 +1,6 @@
+
 const request = require("supertest");
+
 const app = require("../app");
 const db = require("../db/connection");
 const data = require("../db/data/test-data/index");
@@ -55,8 +57,18 @@ describe("GET /api/articles/:article_id", () => {
       .get(`/api/articles/${ARTICLE_ID}`)
       .expect(400)
       .then(({ body }) => {
-        const { msg } = body;
-        expect(msg).toEqual("Invalid data type");
+        const { message } = body;
+        expect(message).toEqual("Invalid data type");
+      });
+  });
+  test("status:404, article not found", () => {
+    const ARTICLE_ID = 1000;
+    return request(app)
+      .get(`/api/articles/${ARTICLE_ID}`)
+      .expect(404)
+      .then(({ body }) => {
+        const { message } = body;
+        expect(message).toEqual("Article not found");
       });
   });
 });
@@ -82,3 +94,4 @@ describe("1. GET/api?users", () => {
       });
   });
 });
+
